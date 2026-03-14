@@ -184,9 +184,9 @@ exec_always picom --experimental-backends
 # launcher is handled by rofi keybindings above
 
 # FEH
-# ucomment the below comment by removing # in order to get random wallpaper at every reload of i3
-exec_always --no-startup-id /usr/bin/feh --randomize --bg-fill $HOME/Pictures/Wallpapers/*
-# exec_always feh --bg-scale $HOME/Pictures/Wallpapers/xyz.jpg
+# Load wallpaper.jpg as the default desktop wallpaper.
+# Fallback: first available file if wallpaper.jpg is missing.
+exec_always --no-startup-id bash -c 'if [ -f "$HOME/Pictures/Wallpapers/wallpaper.jpg" ]; then /usr/bin/feh --bg-fill "$HOME/Pictures/Wallpapers/wallpaper.jpg"; else first_wall=$(find "$HOME/Pictures/Wallpapers" -maxdepth 1 -type f | head -n 1); [ -n "$first_wall" ] && /usr/bin/feh --bg-fill "$first_wall"; fi'
 
 # Round corners & gaps
 for_window [class="^.*"] border pixel 0

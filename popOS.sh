@@ -45,8 +45,9 @@ sudo apt install -y \
 	xdotool maim xss-lock network-manager-gnome
 
 echo "[3/5] Copying dotfiles"
-mkdir -p "$HOME/.config/kitty" "$HOME/.config/i3" "$HOME/.config/polybar" "$HOME/.config/picom"
+mkdir -p "$HOME/.config/kitty/themes" "$HOME/.config/i3" "$HOME/.config/polybar" "$HOME/.config/picom"
 cp "${CONFIG_DIR}/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
+cp "${CONFIG_DIR}/kitty/themes/"*.conf "$HOME/.config/kitty/themes/"
 cp "${CONFIG_DIR}/i3/config" "$HOME/.config/i3/config"
 cp "${CONFIG_DIR}/polybar/config" "$HOME/.config/polybar/config"
 cp "${CONFIG_DIR}/polybar/launch.sh" "$HOME/.config/polybar/launch.sh"
@@ -55,12 +56,15 @@ chmod +x "$HOME/.config/polybar/launch.sh"
 
 echo "[4/5] Copying wallpapers"
 mkdir -p "$HOME/Pictures/Wallpapers" "$HOME/Pictures/Screenshots"
-		WALLPAPER_FILE="${WALLPAPER_DIR}/wallpaper.png"
-		if [ -f "$WALLPAPER_FILE" ]; then
-			cp "$WALLPAPER_FILE" "$HOME/Pictures/Wallpapers/"
-		else
-			echo "Warning: wallpaper not found in ${WALLPAPER_FILE}."
-		fi
+	# Copy supported wallpaper formats instead of a single hardcoded file.
+	shopt -s nullglob
+	WALLPAPER_FILES=("${WALLPAPER_DIR}"/*.{jpg,jpeg,png,webp})
+	if [ ${#WALLPAPER_FILES[@]} -gt 0 ]; then
+		cp "${WALLPAPER_FILES[@]}" "$HOME/Pictures/Wallpapers/"
+	else
+		echo "Warning: no wallpapers found in ${WALLPAPER_DIR}."
+	fi
+	shopt -u nullglob
 
 echo "[Extra] Configuring Rofi theme and icons"
 mkdir -p "$HOME/.config/rofi"
@@ -90,10 +94,24 @@ fi
 
 echo "[Extra] Configuring Neofetch with custom image"
 mkdir -p "$HOME/.config/neofetch"
+	if [ -f "${WALLPAPER_DIR}/Neofetch.jpg" ]; then
+		cp "${WALLPAPER_DIR}/Neofetch.jpg" "$HOME/.config/neofetch/Neofetch.jpg"
+		NEOFETCH_IMAGE="$HOME/.config/neofetch/Neofetch.jpg"
+	elif [ -f "${WALLPAPER_DIR}/Neofetch.png" ]; then
+		cp "${WALLPAPER_DIR}/Neofetch.png" "$HOME/.config/neofetch/Neofetch.png"
+		NEOFETCH_IMAGE="$HOME/.config/neofetch/Neofetch.png"
+	else
+		NEOFETCH_IMAGE=""
+		echo "Warning: Neofetch image not found in ${WALLPAPER_DIR}."
+	fi
+
 cat > "$HOME/.config/neofetch/config.conf" <<'EONEO'
-image_source="$HOME/Pop_os-dotfile-config/Wallpapers/Neofetch.png"
-image_backend="w3m"
+image_backend="kitty"
 EONEO
+
+if [ -n "${NEOFETCH_IMAGE}" ]; then
+	echo "image_source=\"${NEOFETCH_IMAGE}\"" >> "$HOME/.config/neofetch/config.conf"
+fi
 
 echo "[5/5] Setting kitty as default terminal (if available)"
 if command -v kitty >/dev/null 2>&1; then
