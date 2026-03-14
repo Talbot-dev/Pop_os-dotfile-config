@@ -31,21 +31,29 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_DIR="${SCRIPT_DIR}/config"
 WALLPAPER_DIR="${SCRIPT_DIR}/Wallpapers"
 
-echo "[1/5] Updating system"
+echo "[1/5] Updating system
+
+"
 sudo apt update
 sudo apt upgrade -y
 
-echo "[2/5] Installing desktop packages (i3, polybar, picom, rofi, kitty)"
+echo "[2/5] Installing desktop packages (i3, polybar, picom, rofi, kitty)
+
+"
 sudo apt install -y \
 	i3-wm i3lock i3status \
 	polybar picom rofi \
 	kitty feh numlockx \
 	vim neofetch \
 	fonts-font-awesome fonts-unifont \
+	ranger \
+	cowsay \
 	flameshot \
 	xdotool maim xss-lock network-manager-gnome
 
-echo "[3/5] Copying dotfiles"
+echo "[3/5] Copying dotfiles
+
+"
 mkdir -p "$HOME/.config/kitty/themes" "$HOME/.config/i3" "$HOME/.config/polybar" "$HOME/.config/picom"
 cp "${CONFIG_DIR}/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
 cp "${CONFIG_DIR}/kitty/themes/"*.conf "$HOME/.config/kitty/themes/"
@@ -55,7 +63,9 @@ cp "${CONFIG_DIR}/polybar/launch.sh" "$HOME/.config/polybar/launch.sh"
 cp "${CONFIG_DIR}/picom/picom.conf" "$HOME/.config/picom/picom.conf"
 chmod +x "$HOME/.config/polybar/launch.sh"
 
-echo "[4/5] Copying wallpapers"
+echo "[4/5] Copying wallpapers
+
+"
 mkdir -p "$HOME/Pictures/Wallpapers" "$HOME/Pictures/Screenshots"
 	# Copy supported wallpaper formats instead of a single hardcoded file.
 	shopt -s nullglob
@@ -67,7 +77,9 @@ mkdir -p "$HOME/Pictures/Wallpapers" "$HOME/Pictures/Screenshots"
 	fi
 	shopt -u nullglob
 
-echo "[Extra] Configuring Rofi theme and icons"
+echo "[Extra] Configuring Rofi theme and icons
+
+"
 mkdir -p "$HOME/.config/rofi"
 cat > "$HOME/.config/rofi/config.rasi" <<'EOROFI'
 configuration {
@@ -83,7 +95,9 @@ if ! dpkg -l | grep -q papirus-icon-theme; then
 	sudo apt install -y papirus-icon-theme
 fi
 
-echo "[Extra] Configuring Polybar colors (Gruvbox palette)"
+echo "[Extra] Configuring Polybar colors (Gruvbox palette)
+
+"
 POLYBAR_CONFIG="$HOME/.config/polybar/config"
 if [ -f "$POLYBAR_CONFIG" ]; then
 	sed -i 's/^background = .*/background = #282828/' "$POLYBAR_CONFIG"
@@ -93,7 +107,9 @@ if [ -f "$POLYBAR_CONFIG" ]; then
 	sed -i 's/^alert = .*/alert = #cc241d/' "$POLYBAR_CONFIG"
 fi
 
-echo "[Extra] Configuring Neofetch with custom image"
+echo "[Extra] Configuring Neofetch with custom image
+
+"
 mkdir -p "$HOME/.config/neofetch"
 	if [ -f "${WALLPAPER_DIR}/Neofetch.jpg" ]; then
 		cp "${WALLPAPER_DIR}/Neofetch.jpg" "$HOME/.config/neofetch/Neofetch.jpg"
@@ -114,7 +130,9 @@ if [ -n "${NEOFETCH_IMAGE}" ]; then
 	echo "image_source=\"${NEOFETCH_IMAGE}\"" >> "$HOME/.config/neofetch/config.conf"
 fi
 
-echo "[5/5] Setting kitty as default terminal (if available)"
+echo "[5/5] Setting kitty as default terminal (if available)
+
+"
 if command -v kitty >/dev/null 2>&1; then
 	kitty_path="$(command -v kitty)"
 	if update-alternatives --list x-terminal-emulator >/dev/null 2>&1; then
