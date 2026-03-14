@@ -27,7 +27,11 @@ Personal **Pop_OS!** dotfiles to customize a lightweight, keyboard-driven deskto
 
 ## Preview
 
-Here will be the pictures of the environment once I finish the setup
+![Pop_OS Desktop](screenshots/Dotfile1.png)
+
+![Neofetch](screenshots/Dotfile2.png)
+
+![Full environment](screenshots/Dotfile3.png)
 
 ---
 ### 📚 i3WM Guide
