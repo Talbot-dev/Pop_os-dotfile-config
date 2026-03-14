@@ -87,7 +87,7 @@ If Polybar does not show up after login, run:
 ~/.config/polybar/launch.sh
 ```
 
-#### Enjoy the custom Pop_OS! environment 🟣🔵
+#### Enjoy the custom Pop_OS! environment
 
 ---
 
@@ -100,7 +100,7 @@ sudo chmod +x uninstall_popOS.sh
 ./uninstall_popOS.sh
 ```
 
-This will uninstall packages and configuration files and restore the default terminal, if applicable. To fully restore the previous environment, we recommend restarting or logging out after uninstallation.
+This will uninstall packages and configuration files and restore the default terminal, if applicable. To fully restore the previous environment, I recommend restarting or logging out after uninstallation.
 
 > [!NOTE]
 > This configuration can be applied to any distro based on Ubuntu/Debian
