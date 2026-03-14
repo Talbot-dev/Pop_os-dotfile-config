@@ -23,7 +23,7 @@
 
 𓆝 𓆟 𓆞 𓆝 𓆟
 
-Personal **Pop_OS!** dotfiles to customize a lightweight, keyboard-driven desktop environment.
+Personal **Pop_OS!** dotfiles to customize a minimal, lightweight, keyboard-driven desktop environment.
 
 ## Preview
 
