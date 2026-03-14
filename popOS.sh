@@ -42,6 +42,7 @@ sudo apt install -y \
 	kitty feh numlockx \
 	vim neofetch \
 	fonts-font-awesome fonts-unifont \
+	flameshot \
 	xdotool maim xss-lock network-manager-gnome
 
 echo "[3/5] Copying dotfiles"
