@@ -39,7 +39,7 @@ sudo apt install -y \
 	polybar picom rofi \
 	kitty feh numlockx \
 	vim neofetch \
-	fonts-font-awesome ttf-unifont \
+	fonts-font-awesome fonts-unifont \
 	xdotool maim xss-lock network-manager-gnome
 
 echo "[3/5] Copying dotfiles"
