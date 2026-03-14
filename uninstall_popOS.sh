@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+echo " (⊙ _ ⊙ ).... Removing Pop_OS Dotfile Config..."
+
 set -euo pipefail
 
 # Uninstaller for Pop_os-dotfile-config
@@ -41,4 +44,8 @@ fi
 
 # 5. Final message
 echo "\nUninstallation complete."
-echo "Reboot or log out and back in to fully restore your previous desktop environment."
+echo "
+
+Reboot or log out and back in to fully restore your previous desktop environment.
+(つ╥﹏╥)つ
+"
