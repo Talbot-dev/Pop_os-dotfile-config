@@ -34,7 +34,7 @@ Personal **Pop_OS!** dotfiles to customize a minimal, lightweight, keyboard-driv
 ![Full environment](screenshots/Dotfile3.png)
 
 ---
-> [!NOTE]
+> [!IMPORTANT]
 > If you're new to **i3 Window Manager**, check the official reference card:
 https://i3wm.org/docs/refcard.html
 
@@ -102,5 +102,7 @@ sudo chmod +x uninstall_popOS.sh
 
 This will uninstall packages and configuration files and restore the default terminal, if applicable. To fully restore the previous environment, we recommend restarting or logging out after uninstallation.
 
+> [!NOTE]
+> This configuration can be applied to any distro based on Ubuntu/Debian
 ---
 Talbot dev ( ദ്ദി ˙ᗜ˙ )
