@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 echo "
 # ██████╗  ██████╗ ██████╗      ██████╗ ███████╗        
 # ██╔══██╗██╔═══██╗██╔══██╗    ██╔═══██╗██╔════╝        
@@ -22,72 +23,61 @@ echo "
 # ╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝
 
 "
-echo "[1/6] Updating and Upgrading the system"
-sudo apt update && sudo apt upgrade -y
+set -euo pipefail
 
-echo "[2/6] Installing & setting kitty"
-# Installing kitty & setting it up
-sudo apt install kitty -y
-sudo update-alternatives --config x-terminal-emulator
-mkdir $HOME/.config/kitty
-cp $HOME/i3wm-ez/config/kitty/kitty.conf $HOME/.config/kitty/kitty.conf
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_DIR="${SCRIPT_DIR}/config"
+WALLPAPER_DIR="${SCRIPT_DIR}/Wallpapers"
 
-echo "[3/6] Installing vim, neofetch & ulauncher"
-# Installing vim
-sudo apt install vim -y
-# Neofetch
-sudo apt install neofetch -y
-# ulauncher install
-sudo add-apt-repository ppa:agornostal/ulauncher -y
-sudo apt update -y
-sudo apt install ulauncher -y
+echo "[1/5] Updating system"
+sudo apt update
+sudo apt upgrade -y
 
-echo "[4/6] Installing required libraries"
-# Installing required libraries
-sudo apt install libxcb-glx0 libxcb-glx0-dev libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev libxcb-icccm4-dev libyajl-dev libstartup-notification0-dev libxcb-randr0-dev libev-dev libxcb-cursor-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev autoconf xutils-dev libtool automake libxcb-shape0-dev xcb-proto cmake cmake-data pkg-config python3-sphinx libcairo2-dev libxcb-composite0-dev python3-xcbgen libxcb-image0-dev libxcb-ewmh-dev libxcb-xrm-dev libasound2-dev libpulse-dev libjsoncpp-dev libmpdclient-dev libcurl4-openssl-dev libnl-genl-3-dev meson libxext-dev libxcb-damage0-dev libxcb-xfixes0-dev libxcb-render-util0-dev libxcb-render0-dev libxcb-present-dev libpixman-1-dev libdbus-1-dev libconfig-dev libgl1-mesa-dev libpcre2-dev libevdev-dev uthash-dev libx11-xcb-dev -y
+echo "[2/5] Installing desktop packages (i3, polybar, picom, rofi, kitty)"
+sudo apt install -y \
+	i3-wm i3lock i3status \
+	polybar picom rofi \
+	kitty feh numlockx \
+	vim neofetch \
+	fonts-font-awesome ttf-unifont \
+	xdotool maim xss-lock network-manager-gnome
 
+echo "[3/5] Copying dotfiles"
+mkdir -p "$HOME/.config/kitty" "$HOME/.config/i3" "$HOME/.config/polybar" "$HOME/.config/picom"
+cp "${CONFIG_DIR}/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
+cp "${CONFIG_DIR}/i3/config" "$HOME/.config/i3/config"
+cp "${CONFIG_DIR}/polybar/config" "$HOME/.config/polybar/config"
+cp "${CONFIG_DIR}/polybar/launch.sh" "$HOME/.config/polybar/launch.sh"
+cp "${CONFIG_DIR}/picom/picom.conf" "$HOME/.config/picom/picom.conf"
+chmod +x "$HOME/.config/polybar/launch.sh"
 
-echo "[5/6] Configuring i3-gaps, polybar, picom and numlockx"
-# SPEED RICER REPOSTIORY i3-gaps
-sudo add-apt-repository ppa:kgilmer/speed-ricer -y
-sudo apt update -y
-sudo apt install i3-gaps -y
+echo "[4/5] Copying wallpapers"
+mkdir -p "$HOME/Pictures/Wallpapers" "$HOME/Pictures/Screenshots"
+if compgen -G "${WALLPAPER_DIR}/*" > /dev/null; then
+	cp -r "${WALLPAPER_DIR}/." "$HOME/Pictures/Wallpapers/"
+else
+	echo "Warning: no wallpapers found in ${WALLPAPER_DIR}."
+fi
 
-# Polybar Install
-cd $HOME/Downloads
-git clone https://github.com/stark/siji && cd siji
-./install.sh
-cd $HOME/Downloads
-git clone --recursive https://github.com/polybar/polybar
-cd $HOME/Downloads/polybar
-mkdir build && cd build
-cmake ..
-make -j$(nproc)
-sudo make install
+echo "[5/5] Setting kitty as default terminal (if available)"
+if command -v kitty >/dev/null 2>&1; then
+	kitty_path="$(command -v kitty)"
+	if update-alternatives --list x-terminal-emulator >/dev/null 2>&1; then
+		sudo update-alternatives --set x-terminal-emulator "$kitty_path" || true
+	fi
+fi
 
-# Picom install
-cd $HOME/Downloads
-git clone https://github.com/ibhagwan/picom.git
-cd picom
-git submodule update --init --recursive
-meson --buildtype=release . build
-ninja -C build
-sudo ninja -C build install
+cat <<'EOF'
 
-# installing numlockx
-sudo apt install feh numlockx ttf-unifont -y
+Installation complete.
 
-echo "[6/6] Replacing files..."
-# Replacing files
-mkdir $HOME/Pictures/Wallpapers
-cp $HOME/i3wm-ez/Wallpapers/wallpaper.jpg $HOME/Pictures/Wallpapers/wallpaper.jpg
-mkdir $HOME/.config/i3
-cp $HOME/i3wm-ez/config/i3/config $HOME/.config/i3/config
-mkdir $HOME/.config/polybar
-mkdir $HOME/.config/picom
-cp $HOME/i3wm-ez/config/polybar/config $HOME/.config/polybar/config
-cp $HOME/i3wm-ez/config/polybar/launch.sh $HOME/.config/polybar/launch.sh
-chmod +x $HOME/.config/polybar/launch.sh
-cp $HOME/i3wm-ez/config/picom/picom.conf $HOME/.config/picom/picom.conf
+Next steps:
+1. Log out and choose i3 from the login screen.
+2. Inside i3, press Mod+Shift+r to reload config (if needed).
+3. Polybar should autostart from ~/.config/i3/config.
+4. Open launcher with Mod+d (rofi).
 
-echo "All done! Please restart your system and select i3-gaps from the login screen. After logging in, run 'polybar launch.sh' to start the polybar. You can also set it to autostart in your i3 config file."
+If polybar does not appear, run:
+	~/.config/polybar/launch.sh
+
+EOF

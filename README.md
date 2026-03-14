@@ -38,9 +38,23 @@ sudo chmod +x popOS.sh
 ```bash
 ./popOS.sh
 ```
+
+The installer now configures:
+- `i3` + your custom `~/.config/i3/config`
+- `polybar` + autostart via i3 config
+- `picom`
+- `kitty`
+- `rofi` launcher (`Mod+d`)
+
 ---
 ### 🔄 Reboot
 Restart your computer and select i3 on the login screen.
+
+If Polybar does not show up after login, run:
+
+```bash
+~/.config/polybar/launch.sh
+```
 
 #### Enjoy your custom Pop_OS! environment.
 
