@@ -21,6 +21,8 @@ echo "
 # ██║██║╚██╗██║╚════██║   ██║   ██╔══██║██║     ██║     
 # ██║██║ ╚████║███████║   ██║   ██║  ██║███████╗███████╗
 # ╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝
+#
+# by: Talbot dev ¯\_ (ᵕ—ᴗ—)_/¯
 
 "
 set -euo pipefail
@@ -53,11 +55,45 @@ chmod +x "$HOME/.config/polybar/launch.sh"
 
 echo "[4/5] Copying wallpapers"
 mkdir -p "$HOME/Pictures/Wallpapers" "$HOME/Pictures/Screenshots"
-if compgen -G "${WALLPAPER_DIR}/*" > /dev/null; then
-	cp -r "${WALLPAPER_DIR}/." "$HOME/Pictures/Wallpapers/"
-else
-	echo "Warning: no wallpapers found in ${WALLPAPER_DIR}."
+		WALLPAPER_FILE="${WALLPAPER_DIR}/wallpaper.png"
+		if [ -f "$WALLPAPER_FILE" ]; then
+			cp "$WALLPAPER_FILE" "$HOME/Pictures/Wallpapers/"
+		else
+			echo "Warning: wallpaper not found in ${WALLPAPER_FILE}."
+		fi
+
+echo "[Extra] Configuring Rofi theme and icons"
+mkdir -p "$HOME/.config/rofi"
+cat > "$HOME/.config/rofi/config.rasi" <<'EOROFI'
+configuration {
+	show-icons: true;
+	icon-theme: "Papirus";
+	font: "FiraCode Nerd Font 12";
+}
+@theme "/usr/share/rofi/themes/gruvbox-dark.rasi"
+EOROFI
+
+# Instala Papirus icon theme si no está
+if ! dpkg -l | grep -q papirus-icon-theme; then
+	sudo apt install -y papirus-icon-theme
 fi
+
+echo "[Extra] Configuring Polybar colors (Gruvbox palette)"
+POLYBAR_CONFIG="$HOME/.config/polybar/config"
+if [ -f "$POLYBAR_CONFIG" ]; then
+	sed -i 's/^background = .*/background = #282828/' "$POLYBAR_CONFIG"
+	sed -i 's/^foreground = .*/foreground = #ebdbb2/' "$POLYBAR_CONFIG"
+	sed -i 's/^primary = .*/primary = #d79921/' "$POLYBAR_CONFIG"
+	sed -i 's/^secondary = .*/secondary = #458588/' "$POLYBAR_CONFIG"
+	sed -i 's/^alert = .*/alert = #cc241d/' "$POLYBAR_CONFIG"
+fi
+
+echo "[Extra] Configuring Neofetch with custom image"
+mkdir -p "$HOME/.config/neofetch"
+cat > "$HOME/.config/neofetch/config.conf" <<'EONEO'
+image_source="$HOME/Pop_os-dotfile-config/Wallpapers/Neofetch.png"
+image_backend="w3m"
+EONEO
 
 echo "[5/5] Setting kitty as default terminal (if available)"
 if command -v kitty >/dev/null 2>&1; then
