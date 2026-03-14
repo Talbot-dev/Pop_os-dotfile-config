@@ -21,12 +21,19 @@
 # ╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝
 ```
 
-Personal **Pop_OS!** dotfiles to customize a lightweight, keyboard-driven desktop environment.
+𓆝 𓆟 𓆞 𓆝 𓆟
 
+Personal **Pop_OS!** dotfiles to customize a lightweight, keyboard-driven desktop environment.
 
 ## Preview
 
 Here will be the pictures of the environment once I finish the setup
+
+---
+### 📚 i3WM Guide
+If you're new to i3 Window Manager, check the official reference card:
+
+https://i3wm.org/docs/refcard.html
 
 ---
 
@@ -77,20 +84,17 @@ If Polybar does not show up after login, run:
 ~/.config/polybar/launch.sh
 ```
 
-#### Enjoy your custom Pop_OS! environment.
+#### Enjoy your custom Pop_OS! environment.  ദ്ദി/ᐠ｡‸｡ᐟ\
 
 ---
-### 📚 i3WM Guide
-If you're new to i3 Window Manager, check the official reference card:
 
-https://i3wm.org/docs/refcard.html
+## Uninstallation
 
-## Desinstalación
-
-Si deseas revertir todos los cambios y eliminar la configuración instalada por este script, ejecuta el desinstalador:
+If you want to undo all changes and remove the settings installed by this script, run the uninstaller
 
 ```bash
-bash uninstall_popOS.sh
+sudo chmod +x uninstall_popOS.sh
+./uninstall_popOS.sh
 ```
 
-Esto eliminará los paquetes instalados, archivos de configuración y restaurará el terminal por defecto si fue cambiado. Se recomienda reiniciar o cerrar sesión después de la desinstalación para restaurar completamente el entorno anterior.
+This will uninstall packages and configuration files and restore the default terminal, if applicable. To fully restore the previous environment, we recommend restarting or logging out after uninstallation.
