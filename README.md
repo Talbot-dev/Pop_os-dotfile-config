@@ -84,3 +84,13 @@ If Polybar does not show up after login, run:
 If you're new to i3 Window Manager, check the official reference card:
 
 https://i3wm.org/docs/refcard.html
+
+## Desinstalación
+
+Si deseas revertir todos los cambios y eliminar la configuración instalada por este script, ejecuta el desinstalador:
+
+```bash
+bash uninstall_popOS.sh
+```
+
+Esto eliminará los paquetes instalados, archivos de configuración y restaurará el terminal por defecto si fue cambiado. Se recomienda reiniciar o cerrar sesión después de la desinstalación para restaurar completamente el entorno anterior.
