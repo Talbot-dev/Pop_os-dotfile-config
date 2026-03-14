@@ -34,9 +34,8 @@ Personal **Pop_OS!** dotfiles to customize a minimal, lightweight, keyboard-driv
 ![Full environment](screenshots/Dotfile3.png)
 
 ---
-### 📚 i3WM Guide
-If you're new to i3 Window Manager, check the official reference card:
-
+> [!NOTE]
+> If you're new to **i3 Window Manager**, check the official reference card:
 https://i3wm.org/docs/refcard.html
 
 ---
@@ -88,7 +87,7 @@ If Polybar does not show up after login, run:
 ~/.config/polybar/launch.sh
 ```
 
-#### Enjoy your custom Pop_OS! environment.  ദ്ദി/ᐠ｡‸｡ᐟ\
+#### Enjoy the custom Pop_OS! environment 🟣🔵
 
 ---
 
@@ -102,3 +101,6 @@ sudo chmod +x uninstall_popOS.sh
 ```
 
 This will uninstall packages and configuration files and restore the default terminal, if applicable. To fully restore the previous environment, we recommend restarting or logging out after uninstallation.
+
+---
+Talbot dev ( ദ്ദി ˙ᗜ˙ )
