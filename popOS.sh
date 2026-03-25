@@ -65,7 +65,6 @@ configuration {
 @theme "/usr/share/rofi/themes/gruvbox-dark.rasi"
 EOROFI
 
-# Instala Papirus icon theme si no está
 if ! dpkg -l | grep -q papirus-icon-theme; then
 	sudo apt install -y papirus-icon-theme
 fi
