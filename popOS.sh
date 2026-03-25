@@ -12,7 +12,7 @@ echo "[1/5] Updating system
 sudo apt update
 sudo apt upgrade -y
 
-echo "[2/5] Installing desktop packages (i3, polybar, picom, rofi, kitty)
+echo "[2/5] Installing desktop packages
 
 "
 sudo apt install -y \
@@ -116,11 +116,67 @@ if command -v kitty >/dev/null 2>&1; then
 fi
 
 
-echo "[Extra] Configuring zsh
+echo "[Extra] Configuring zsh.....
 
 "
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  RUNZSH=no CHSH=no KEEP_ZSHRC=no \
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+else
+  echo "[Skip] Oh My Zsh already installed"
+fi
 
+ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
+install_plugin() {
+  local repo=$1
+  local dest=$2
+
+  if [ ! -d "$dest" ]; then
+    git clone "$repo" "$dest"
+  else
+    echo "[Skip] Plugin already exists: $(basename "$dest")"
+  fi
+}
+install_plugin https://github.com/zsh-users/zsh-autosuggestions \
+  $ZSH_CUSTOM/plugins/zsh-autosuggestions
+
+install_plugin https://github.com/zsh-users/zsh-syntax-highlighting.git \
+  $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+
+install_plugin https://github.com/zsh-users/zsh-completions \
+  $ZSH_CUSTOM/plugins/zsh-completions
+
+echo "[Extra] Configuring .zshrc..."
+
+ZSHRC="$HOME/.zshrc"
+
+touch "$ZSHRC"
+
+set_or_replace() {
+  local key=$1
+  local value=$2
+
+  if grep -q "^$key=" "$ZSHRC"; then
+    sed -i "s|^$key=.*|$key=$value|" "$ZSHRC"
+  else
+    echo "$key=$value" >> "$ZSHRC"
+  fi
+}
+set_or_replace "plugins" "(git zsh-autosuggestions zsh-syntax-highlighting zsh-completions)"
+
+grep -qxF 'autoload -U compinit && compinit' "$ZSHRC" || \
+echo 'autoload -U compinit && compinit' >> "$ZSHRC"
+
+echo "[Extra] Setting zsh as default shell..."
+
+CURRENT_SHELL=$(basename "$SHELL")
+ZSH_PATH=$(which zsh)
+
+if [ "$CURRENT_SHELL" != "zsh" ]; then
+  chsh -s "$ZSH_PATH"
+else
+  echo "[Skip] zsh already default shell"
+fi
 
 cat <<'EOF'
 
