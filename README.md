@@ -25,6 +25,11 @@
 
 Personal **Pop_OS!** dotfiles to customize a minimal, lightweight, keyboard-driven desktop environment.
 
+The installer now supports an interactive merge workflow for:
+- `i3` profile (original setup)
+- `bspwm` profile (imported from `dotfiles-bspwm`)
+- `both` profiles in the same system
+
 ## Preview
 
 ![Pop_OS Desktop](screenshots/Dotfile1.png)
@@ -70,22 +75,27 @@ sudo chmod +x popOS.sh
 ./popOS.sh
 ```
 
-The installer now configures:
-- `i3` + your custom `~/.config/i3/config`
-- `polybar` + autostart via i3 config
-- `picom`
-- `kitty`
-- `rofi` launcher (`Mod+d`)
+The installer now lets you choose:
+- Window manager profile: `i3`, `bspwm`, or `both`
+- Optional components: `alacritty`, `ranger`, `btop`, `jgmenu`, `qt5ct/gtk`, `Thunar`, `mpd/ncmpcpp`
+
+Core setup includes:
+- `rofi`, `picom`, `neofetch`, `zsh` + Oh My Zsh plugins
+- Wallpaper and screenshot directories
+- Dotfiles merge from `config/` and `dotfiles-bspwm/config/` according to the selected profile
 
 ---
-### 🔄 Reboot
-Restart your computer and select i3 on the login screen.
+### 🔄 Reboot / Relogin
+Restart or log out, then select your session (`i3` or `bspwm`) on the login screen.
 
 If Polybar does not show up after login, run:
 
 ```bash
 ~/.config/polybar/launch.sh
 ```
+
+> [!NOTE]
+> `dotfiles-bspwm/app support/*.pkg.tar.zst` are Arch packages and are intentionally **not installed** on Pop!_OS.
 
 #### Enjoy the custom Pop_OS! environment
 
